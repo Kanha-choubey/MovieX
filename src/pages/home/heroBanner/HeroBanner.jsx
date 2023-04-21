@@ -3,8 +3,9 @@ import "./style.scss";
 import { useNavigate } from "react-router-dom";
 import useFetch from "../../../hooks/useFetch";
 import { useSelector } from "react-redux";
-import img from "../../../laziLoadimage/img";
-import contentWrapper from "../../../contentWrapper/contentWrapper";
+
+import ContentWrapper from "../../../components/contentWrapper/ContentWrapper";
+import Img from "../../../components/laziLoadimage/img";
 
 const HeroBanner = () => {
   const [background, setBackground] = useState("");
@@ -18,7 +19,7 @@ const HeroBanner = () => {
       data?.results?.[Math.floor(Math.random() * 20)]?.backdrop_path;
     setBackground(bg);
   }, [data]);
-  const searchQueryHandle = (event) => {
+  const searchQueryHandler = (event) => {
     if (event.key === "Enter" && query.length > 0) {
       navigate(`/search/${query}`);
     }
@@ -27,26 +28,30 @@ const HeroBanner = () => {
   return (
     <>
       <div className="heroBanner">
-        <div className="backdrop-img">
-          <img src={background} />
-        </div>
-        <div className="wrapper">
-          <div className="herobannerContant">
+        {!loading && (
+          <div className="backdrop-img">
+            <Img src={background} />
+          </div>
+        )}
+
+        <div className="opacity-layer"></div>
+        <ContentWrapper>
+          <div className="heroBannerContent">
             <span className="title">Welcome.</span>
             <span className="subTitle">
-              Millions of movies , TV shows and people to discover Explore now.
+              Millions of movies, TV shows and people to discover. Explore now.
             </span>
             <div className="searchInput">
               <input
-                onChange={(e) => setQuery(e.target.value)}
-                onKeyUp={searchQueryHandle}
                 type="text"
-                placeholder="Search for a Movie or Tv show..."
+                placeholder="Search for a movie or tv show...."
+                onChange={(e) => setQuery(e.target.value)}
+                onKeyUp={searchQueryHandler}
               />
-              <button>Search </button>
+              <button>Search</button>
             </div>
           </div>
-        </div>
+        </ContentWrapper>
       </div>
     </>
   );
